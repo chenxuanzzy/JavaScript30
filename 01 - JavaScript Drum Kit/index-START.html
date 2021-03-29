@@ -68,7 +68,6 @@
           document.querySelectorAll('.key').forEach(key => 
             //這裡的 key 指向所有 div.class="key"
             key.addEventListener('transitionend', transitionHandler));
-            
         }
         function transitionHandler(e){
           if(e.propertyName === 'transform'){
@@ -78,6 +77,5 @@
       }
     })()
   </script>
-
 </body>
 </html>
