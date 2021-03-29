@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      /*以下是新增，將時針指向 12 開始更改比較方便*/
+      transform-origin: 100%; /*軸心的位置*/
+      transform: rotate(90deg);/*指向到 00:00*/
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); /*變換的速度*/
+    }
+  </style>
+  <script>
+    (function(){
+    const hour = document.querySelector('.hour-hand');
+    const min = document.querySelector('.min-hand');
+    const second = document.querySelector('.second-hand');
+    const now = new Date();
+    const hours = now.getHours();
+    const mins = now.getMinutes();
+    const seconds = now.getMinutes();
+    var secondsDeg = (seconds/60) * 360 + 90; //加上 90 是因為起出在 style hand 上加上 transform 讓時針自動指向 12
+    var minsDeg = (mins/60) * 360 + seconds * (6/60) + 90; //加上秒針前進的度數
+    var hoursDeg = (hours/60) * 360 + mins * (6/60) + 90; //加上分針前進的度數
+    function setClock(){
+      secondsDeg += 360/60;
+      minsDeg += 360/(60*60);
+      hoursDeg += 360/(60*60*12);
+      hour.style.transform = `rotate(${secondsDeg}deg)`;
+      min.style.transform = `rotate(${minsDeg}deg)`;
+      second.style.transform = `rotate(${hourDeg}deg)`;
+    }
+    setInterval(setClock, 1000);
+    })()
+  </script>
+</body>
+</html>
