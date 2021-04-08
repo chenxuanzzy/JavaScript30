@@ -94,8 +94,34 @@
       <p>Don't forget to tweet your result!</p>
     </div>
   </div>
-
 <script>
+  let checkInput = document.querySelectorAll('input');
+  checkInput.forEach((input)=>{
+    input.addEventListener('click', selected);
+  })
+  let arr = Array.from(checkInput);
+  let checkThis = 0;
+  function selected(e){
+    let index = e.target;
+    let order = checkInput.indexOf(index);
+    if(e.shiftkey === true){
+      checked(order);
+    }
+    checkThis = order;
+  }
+  function checked(order){
+    if(order > checkThis){
+      for(let i = checkThis; i < order; i++){
+        checkInput[i].checked = true;
+      }
+    }else{
+      for(let i = order; i < checkThis; i++){
+        checkInput[i].checked = true;
+      }
+    }
+  }
 </script>
 </body>
 </html>
+
+
