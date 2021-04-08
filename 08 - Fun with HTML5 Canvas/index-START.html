@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+<canvas id="draw" width="800" height="800"></canvas>
+<script>
+  (function panting(){
+    let canvas = document.querySelector('#draw');
+    let ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; //全屏
+    canvas.height = window.innerHeight;
+    let lineWidth = 50;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = lineWidth;
+    let colorDeg = 0 //顏色的紀錄
+    ctx.strokeStyle = `hsl(${colorDeg},100%,50%)` //color
+    let direction = -1;
+    let x = 0; //兩點一線，按下去的點
+    let y = 0;
+    let drawing = false;
+    canvas.addEventListener('mousedown',(e)=>{
+      drawing = true;
+      [x, y] = [e.offsetX, e.offsetY];
+    })
+    canvas.addEventListener('mousemove',(e)=>{
+      if(!drawing) return;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(e.offsetX, e.offsetY);
+      [x, y] = [e.offsetX, e.offsetY];
+      ctx.lineWidth = lineWidth
+      colorDeg = colorDeg < 360 ? colorDeg + 1 : 0; //三元運算
+      ctx.strokeStyle = `hsl(${colorDeg},100%,50%)`;
+      if(lineWidth < 10 || lineWidth > 50){
+        direction *= -1;
+      }
+      lineWidth += direction;
+      ctx.stroke();
+      // console.log(drawing);
+    })
+    canvas.addEventListener('mouseup',()=>{
+      drawing = false;
+    })
+    canvas.addEventListener('mouseout',()=>{
+      drawing = false;
+    })
+  })();
+</script>
+
+<style>
+  html, body {
+    margin: 0;
+  }
+</style>
+
+</body>
+</html>
